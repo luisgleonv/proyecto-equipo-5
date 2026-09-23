@@ -1,0 +1,23 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8spsphostfilesystem
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sPSPHostFilesystem
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8spsphostfilesystem
+        
+        violation[{"msg": msg, "details": {}}] {
+            volume := input.review.object.spec.volumes[_]
+            has_field(volume, "hostPath")
+            msg := sprintf("Violacion ISO 27001: El uso de hostPath no esta permitido en el volumen: %v", [volume.name])
+        }
+        
+        has_field(object, field) {
+            object[field]
+        }

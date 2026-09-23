@@ -1,0 +1,23 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8sallowedrepos
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sAllowedRepos
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sallowedrepos
+        
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.containers[_]
+          not valid_repo(container.image)
+          msg := sprintf("Violacion ISO 27001: La imagen %v no proviene de un registro de confianza", [container.image])
+        }
+        
+        valid_repo(image) {
+          startswith(image, "nginx")
+        }

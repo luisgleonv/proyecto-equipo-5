@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: golden-pod
+  labels:
+    entorno: produccion # Cumple Política 11 (Requerir labels)
+spec:
+  containers:
+  - name: nginx-app
+    image: nginxinc/nginx-unprivileged:1.25-alpine # Cumple Políticas 8 y 9
+    resources:
+      limits: # Cumple Política 3
+        cpu: "100m"
+        memory: "128Mi"
+    securityContext:
+      privileged: false                      # Cumple Política 1
+      readOnlyRootFilesystem: true           # Cumple Política 4
+      allowPrivilegeEscalation: false        # Cumple Política 5
+      runAsNonRoot: true                     # Cumple Política 6
+      runAsUser: 101                         
+      capabilities:
+        drop: ["ALL"]                        # Cumple Política 7
+    
+    # Cumple Política 12 (Requerir Probes)
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+
+    volumeMounts:
+    - name: tmp-volume
+      mountPath: /tmp
+  
+  # Cumple Políticas 2 y 10 (Sin hostPath, sin hostNamespaces)
+  volumes:
+  - name: tmp-volume
+    emptyDir: {}

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-privileged
+spec:
+  containers:
+  - name: nginx-app
+    # Cumple Política 8 (registro nginx) y 9 (etiqueta específica, no latest)
+    image: nginx:1.25.3-alpine 
+    # Cumple Política 3 (Límites de recursos obligatorios)
+    resources:
+      limits:
+        cpu: "100m"
+        memory: "128Mi"
+    securityContext:
+      privileged: true                      # Cumple Política 1
+      readOnlyRootFilesystem: true           # Cumple Política 4
+      runAsNonRoot: true                     # Cumple Política 6
+      runAsUser: 1000                        # Requerido si runAsNonRoot es true
+      capabilities:
+        drop: ["ALL"]                        # Cumple Política 7
+  # Cumple Política 10 al no declarar hostNetwork, hostPID ni hostIPC
+  # Cumple Política 2 usando emptyDir en vez de hostPath
+  volumes:
+  - name: temp-storage
+    emptyDir: {}

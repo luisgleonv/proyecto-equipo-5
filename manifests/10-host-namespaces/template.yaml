@@ -1,0 +1,28 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8spsphostnamespace
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sPSPHostNamespace
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8spsphostnamespace
+        
+        violation[{"msg": msg}] {
+          input.review.object.spec.hostNetwork == true
+          msg := "Violacion ISO 27001: El uso de hostNetwork (compartir red con el nodo) esta prohibido"
+        }
+        
+        violation[{"msg": msg}] {
+          input.review.object.spec.hostPID == true
+          msg := "Violacion ISO 27001: El uso de hostPID (ver procesos del nodo) esta prohibido"
+        }
+        
+        violation[{"msg": msg}] {
+          input.review.object.spec.hostIPC == true
+          msg := "Violacion ISO 27001: El uso de hostIPC (memoria compartida del nodo) esta prohibido"
+        }

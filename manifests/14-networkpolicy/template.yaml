@@ -1,0 +1,19 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8srequirenetworkpolicy
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequireNetworkPolicy
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8srequirenetworkpolicy
+        
+        violation[{"msg": msg}] {
+          input.review.object.kind == "Namespace"
+          not input.review.object.metadata.labels["iso27001/network-policy"]
+          msg := sprintf("Violacion ISO 27001: El Namespace %v debe tener la etiqueta 'iso27001/network-policy' para garantizar el aislamiento", [input.review.object.metadata.name])
+        }

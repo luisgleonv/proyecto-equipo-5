@@ -1,0 +1,33 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8srequiredresources
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredResources
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8srequiredresources
+        
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.containers[_]
+          not has_cpu(container)
+          msg := sprintf("Violacion ISO 27001: El contenedor %v no tiene limite de CPU", [container.name])
+        }
+        
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.containers[_]
+          not has_memory(container)
+          msg := sprintf("Violacion ISO 27001: El contenedor %v no tiene limite de memoria", [container.name])
+        }
+        
+        has_cpu(container) {
+          container.resources.limits.cpu
+        }
+        
+        has_memory(container) {
+          container.resources.limits.memory
+        }

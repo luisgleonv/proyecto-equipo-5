@@ -1,0 +1,23 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8spspallowprivilegeescalation
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sPSPAllowPrivilegeEscalation
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8spspallowprivilegeescalation
+        
+        violation[{"msg": msg}] {
+          c := input.review.object.spec.containers[_]
+          not is_escalation_denied(c)
+          msg := sprintf("Violacion ISO 27001: El contenedor %v debe tener allowPrivilegeEscalation en false", [c.name])
+        }
+        
+        is_escalation_denied(c) {
+          c.securityContext.allowPrivilegeEscalation == false
+        }
