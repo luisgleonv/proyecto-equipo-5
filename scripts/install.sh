@@ -18,7 +18,7 @@ echo "2. Instalando OPA Gatekeeper en el namespace gatekeeper-system..."
 helm upgrade --install gatekeeper gatekeeper/gatekeeper \
   --namespace gatekeeper-system \
   --create-namespace \
-  --set auditInterval=60
+  -f helm/values.yaml
 
 echo "3. Esperando a que los Webhooks de Gatekeeper estén listos (30s)..."
 sleep 30
