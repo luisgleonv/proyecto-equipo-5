@@ -41,7 +41,7 @@ find manifests -type f -name "*constraint*.yaml" -exec kubectl apply -f {} \;
 echo "8. Desplegando Gatekeeper Policy Manager (Dashboard GPM)..."
 # Inyectar el ConfigMap antes del dashboard
 kubectl apply -f manifests/configmap.yaml
-kubectl apply -f manifests/gpm.yaml
+kubectl apply -f manifests/dashboard/gpm.yaml
 
 echo "========================================================"
 echo "✅ Instalación completada con éxito."

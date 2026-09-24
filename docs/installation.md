@@ -6,13 +6,13 @@
 * **Requisitos de Software:** Kubernetes v1.25+, Helm v3.0+, SO Linux (Rocky Linux 9 recomendado), Git.
 
 ## 🛠️ Prerrequisitos en el Sistema Operativo
-Antes de interactuar con el clúster, necesitamos las herramientas base instaladas en el nodo principal (`master01`). Ejecuta esto con el usuario `root`.
+Antes de interactuar con el clúster, necesitamos las herramientas base instaladas en el nodo principal (`master01`) y habilitar el puerto por el que se accederá al dashboard. Ejecuta esto con el usuario `root`.
 
 ```bash
-su -
 dnf install epel-release -y
 dnf install git helm -y
-exit
+firewall-cmd --add-port=30080/tcp --permanent
+firewall-cmd --reload
 ```
 * **Explicación:** `epel-release` habilita repositorios adicionales en Enterprise Linux. `git` nos permite clonar el código y `helm` es el gestor de paquetes oficial de Kubernetes necesario para instalar Gatekeeper.
 * **Output esperado:** Mensajes de "Complete!" indicando que los paquetes se descargaron e instalaron correctamente.
@@ -21,8 +21,9 @@ exit
 Inicia sesión con el usuario `ansible` (o el usuario con acceso al `kubeconfig`).
 
 ### 1. Obtener el repositorio
+Verificar previamente tener instalado git en la máquina
 ```bash
-git clone [https://github.com/luisgleonv/proyecto-equipo-5.git](https://github.com/luisgleonv/proyecto-equipo-5.git)
+git clone https://github.com/luisgleonv/proyecto-equipo-5.git
 cd proyecto-equipo-5
 chmod +x scripts/install.sh
 ```
@@ -62,7 +63,7 @@ find manifests -type f -name "*constraint*.yaml" -exec kubectl apply -f {} \;
 
 **Paso E: Dashboard GPM**
 ```bash
-kubectl apply -f manifests/gpm.yaml
+kubectl apply -f manifests/dashboard/gpm.yaml
 ```
 * **Explicación:** Levanta la interfaz gráfica en modo de solo lectura (RBAC) expuesta por el NodePort 30080.
 
