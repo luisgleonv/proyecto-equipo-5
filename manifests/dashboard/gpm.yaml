@@ -52,6 +52,9 @@ spec:
       containers:
       - name: gpm
         image: quay.io/sighup/gatekeeper-policy-manager:v1.0.7
+        envFrom:
+        - configMapRef:
+            name: gpm-config
         ports:
         - containerPort: 8080
         securityContext:

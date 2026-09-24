@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gpm-config
+  namespace: gatekeeper-system
+data:
+  LOG_LEVEL: "info"

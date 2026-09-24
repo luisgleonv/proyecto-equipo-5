@@ -1,0 +1,15 @@
+# Configuraciones personalizadas para el chart oficial de OPA Gatekeeper
+
+# Control A.5.36: Escaneo de recursos heredados cada 60 segundos
+auditInterval: 60
+auditMatchKindOnly: true
+constraintViolationsLimit: 50
+
+# Control A.8.27: Límites de recursos para evitar que Gatekeeper asfixie los nodos
+resources:
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
