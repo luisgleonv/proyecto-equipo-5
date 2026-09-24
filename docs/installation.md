@@ -1,11 +1,11 @@
-# 📖 Guía de Instalación Detallada - OPA Gatekeeper
+#Guía de Instalación Detallada - OPA Gatekeeper
 
-## ⏱️ Información General
+## Información General
 * **Tiempo estimado de instalación:** 3 a 5 minutos.
-* **Requisitos de Hardware:** 2 vCPUs, 4GB RAM (Recomendado para el nodo master).
+* **Requisitos de Hardware:** 4GB RAM (Recomendado para el nodo master).
 * **Requisitos de Software:** Kubernetes v1.25+, Helm v3.0+, SO Linux (Rocky Linux 9 recomendado), Git.
 
-## 🛠️ Prerrequisitos en el Sistema Operativo
+## Prerrequisitos en el Sistema Operativo
 Antes de interactuar con el clúster, necesitamos las herramientas base instaladas en el nodo principal (`master01`) y habilitar el puerto por el que se accederá al dashboard. Ejecuta esto con el usuario `root`.
 
 ```bash
@@ -17,7 +17,7 @@ firewall-cmd --reload
 * **Explicación:** `epel-release` habilita repositorios adicionales en Enterprise Linux. `git` nos permite clonar el código y `helm` es el gestor de paquetes oficial de Kubernetes necesario para instalar Gatekeeper.
 * **Output esperado:** Mensajes de "Complete!" indicando que los paquetes se descargaron e instalaron correctamente.
 
-## 🚀 Instalación Automatizada (Script)
+## Instalación Automatizada (Script)
 Inicia sesión con el usuario `ansible` (o el usuario con acceso al `kubeconfig`).
 
 ### 1. Obtener el repositorio
@@ -67,9 +67,13 @@ kubectl apply -f manifests/dashboard/gpm.yaml
 ```
 * **Explicación:** Levanta la interfaz gráfica en modo de solo lectura (RBAC) expuesta por el NodePort 30080.
 
-## ✅ Validación Final (Output Esperado)
+## Validación Final (Output Esperado)
 Al finalizar, el script te pedirá ejecutar:
 ```bash
 kubectl get pods -n gatekeeper-system
 ```
 El output esperado debe mostrar 4 pods en estado `Running` (3 del controller-manager, 1 del audit) y el pod de `gatekeeper-policy-manager`. Ninguno debe estar en `CrashLoopBackOff`.
+
+Si se tuvo una instalación exitosa podrá revisar en el dashboard las 14 políticas en modo enforce activas y una en modo audit. También puede utilizar el siguiente comando en la terminal con el usuario ansible.
+```bash
+kubectl get constraint
