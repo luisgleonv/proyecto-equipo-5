@@ -79,5 +79,5 @@ Si se tuvo una instalación exitosa podrá revisar en el dashboard las 14 polít
 kubectl get constraint
 ```
 
-![Resultados esperados con una instalación exitosa](docs/img/captura_instalacion.png)
+![Resultados esperados con una instalación exitosa](img/captura_instalacion.png)
 
