@@ -46,7 +46,7 @@ sequenceDiagram
     end
 
     alt Viola política (Enforce / Deny)
-        Webhook-->>API: Denegado (Código HTTP 403)
+        Webhook-->>API: Denegado
         API-->>User: Error: Admission Webhook denied the request
     else Cumple política o está en Dryrun
         Webhook-->>API: Admitido
