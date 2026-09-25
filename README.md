@@ -75,6 +75,32 @@ La terminal confirmará su creación (`created`), pero la brecha será reportada
 Si encuentras comportamientos inesperados o errores, consulta nuestro apartado de errores conocidos y sus soluciones:
 👉 [docs/troubleshooting.md](docs/troubleshooting.md)
 
+## Comandos de Diagnóstico Rápido
+
+### 1. Salud General del Motor
+* **Comando:** `kubectl get pods -n gatekeeper-system`
+* **Explicación:** Verifica que los componentes principales (Controller Manager, Audit y Policy Manager) estén en estado `Running` y `1/1 READY`. Si alguno dice `CrashLoopBackOff` o `0/1`, hay un problema de recursos o configuración.
+
+### 2. Validación de Plantillas (Rego)
+* **Comando:** `kubectl get constrainttemplates`
+* **Explicación:** Lista todas las plantillas base de Gatekeeper instaladas en el clúster. Si tu política no aparece aquí, Kubernetes rechazó el archivo `template.yaml` por errores de sintaxis en el código Rego.
+
+### 3. Validación de Políticas Activas
+* **Comando:** `kubectl get constraints`
+* **Explicación:** Muestra todas las reglas de seguridad que están activamente aplicadas al clúster, indicando su acción configurada (ej. `deny` o `dryrun`) y el número total de violaciones detectadas por cada regla.
+
+### 4. Inspección Profunda de Violaciones
+* **Comando:** `kubectl describe constraint <nombre-de-la-politica>`
+* **Explicación:** Sustituye `<nombre-de-la-politica>` (ej. `k8srequiredlabels`). Este comando te escupe la lista detallada de todos los recursos (pods, namespaces, etc.) que están violando esa regla en este momento, incluyendo el mensaje de error exacto.
+
+### 5. Verificación del Webhook de Admisión
+* **Comando:** `kubectl get validatingwebhookconfigurations`
+* **Explicación:** Confirma que el gancho (Webhook) de Gatekeeper esté inyectado en el API Server. Si este recurso no existe, Gatekeeper está ciego y dejará pasar todos los recursos maliciosos.
+
+### 6. Logs Internos del Dashboard (GPM)
+* **Comando:** `kubectl logs -l app=gatekeeper-policy-manager -n gatekeeper-system`
+* **Explicación:** Extrae la bitácora interna del contenedor del dashboard. Indispensable si la interfaz web no carga o si arroja errores de permisos (RBAC) al intentar leer las políticas.
+
 ## 🔗 Referencias y documentación
 * **OPA Gatekeeper Docs:** https://open-policy-agent.github.io/gatekeeper/website/docs/
 * **Gatekeeper Policy Manager:** https://github.com/sighupio/gatekeeper-policy-manager
