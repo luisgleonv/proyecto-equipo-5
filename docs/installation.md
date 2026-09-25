@@ -1,4 +1,4 @@
-#Guía de Instalación Detallada - OPA Gatekeeper
+# Guía de Instalación Detallada - OPA Gatekeeper
 
 ## Información General
 * **Tiempo estimado de instalación:** 3 a 5 minutos.

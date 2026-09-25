@@ -1,4 +1,4 @@
-# 🛡️ Policy-as-Code con OPA Gatekeeper (Equipo 5)
+#Policy-as-Code con OPA Gatekeeper (Equipo 5)
 
 ## 🎯 Descripción del proyecto
 Este proyecto implementa **OPA Gatekeeper** como un motor de "Policy-as-Code" (Políticas como Código) en un clúster de Kubernetes. Su objetivo principal es asegurar y gobernar la infraestructura mediante un Webhook de Admisión Dinámico que intercepta, evalúa y, en su caso, bloquea la creación o modificación de recursos que no cumplen con los estándares de seguridad definidos. 
@@ -6,8 +6,8 @@ Este proyecto implementa **OPA Gatekeeper** como un motor de "Policy-as-Code" (P
 Alineado a los controles de la norma **ISO/IEC 27001:2022**, este despliegue automatiza la seguridad por diseño (Security by Design), previniendo activamente vulnerabilidades críticas como la ejecución de contenedores privilegiados, el montaje de volúmenes sensibles del host, el escalado de privilegios o la falta de límites de recursos (CPU/RAM). Adicionalmente, se incluye el **Gatekeeper Policy Manager (GPM)**, un dashboard gráfico que permite auditar visualmente las políticas activas y las violaciones existentes en tiempo real, facilitando la gestión y cumplimiento normativo.
 
 ## 👥 Integrantes del equipo
-* **Luis Guillermo León Vargas** - Arquitecto de Seguridad y K8s
-* **[Nombre de tu compañero]** - Ingeniero DevSecOps
+* **Luis Guillermo León Vargas**
+* **Luis Enrique Quintanar Ramírez** 
 
 ## 🔧 Prerrequisitos (versiones de software)
 Para desplegar este proyecto, el entorno (ej. nodo `master01`) debe cumplir con los siguientes requisitos técnicos básicos:
