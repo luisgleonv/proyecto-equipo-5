@@ -58,6 +58,11 @@ kubectl config set-context --current --namespace=default
 
 Este script intentará desplegar 14 recursos maliciosos y culminará desplegando el golden-pod.yaml (un recurso que cumple con todas las políticas).
 
+![Resultados esperados al correr el script. Primera Parte de la captura](docs/img/captura_test_1.png)
+
+![Resultados esperados al correr el script. Segunda Parte de la captura](docs/img/captura_test_2.png)
+
+
 **2. Validar el modo Bloqueo (Enforce / Deny):**
 Intenta inyectar un recurso malicioso. Gatekeeper masacrará la petición en la entrada del clúster y mostrará la lista exacta de controles ISO violados.
 ```bash
@@ -69,7 +74,9 @@ Aplica el pod de pruebas diseñado para pasar las reglas de bloqueo crítico, pe
 ```bash
 kubectl apply -f examples/pod-auditoria.yaml
 ```
-La terminal confirmará su creación (`created`), pero la brecha será reportada silenciosamente. Accede a `http://<IP_DEL_NODO>:30080`, pestaña **Constraints**, busca `auditar-etiquetas-estrictas` y despliega la lista de "Violations" para ver al pod reportado.
+La terminal confirmará su creación (`created`), pero la brecha será reportada silenciosamente. Accede a `http://<IP_DEL_NODO>:30080`, pestaña **Constraints**, busca la regla permisiva (tiene el símbolo de Play en vez del de Stop) y despliega la lista de "Violations" para ver al pod reportado.
+
+![Dashboard GPM mostrando el pod de auditoría en la pestaña Violations](docs/img/captura_auditoria.png)
 
 ## 🐛 Troubleshooting
 Si encuentras comportamientos inesperados o errores, consulta nuestro apartado de errores conocidos y sus soluciones:

@@ -55,3 +55,4 @@ Esta guía documenta los 5 problemas más comunes al operar OPA Gatekeeper y el 
   ```bash
   kubectl config set-context --current --namespace=default
   ```
+  ![Mensajes esperados al intentar levantar los pods con políticas incompletas](img/captura_resultadoEsperado.png)
