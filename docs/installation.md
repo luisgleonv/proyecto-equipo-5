@@ -77,6 +77,7 @@ El output esperado debe mostrar 4 pods en estado `Running` (3 del controller-man
 Si se tuvo una instalación exitosa podrá revisar en el dashboard las 14 políticas en modo enforce activas y una en modo audit. También puede utilizar el siguiente comando en la terminal con el usuario ansible.
 ```bash
 kubectl get constraint
+```
 
 ![Resultados esperados con una instalación exitosa](docs/img/captura_instalacion.png)
 
