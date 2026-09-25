@@ -47,3 +47,11 @@ Esta guía documenta los 5 problemas más comunes al operar OPA Gatekeeper y el 
   ```bash
   kubectl get k8srequiredlabels -o yaml
   ```
+
+### 6. Falsos positivos en pruebas o mensajes personalizados ocultos
+* **Síntoma:** Al ejecutar el script de pruebas, los recursos se bloquean pero muestran el error `violates PodSecurity "restricted:v1.24"` en lugar de los mensajes personalizados de Gatekeeper (ISO 27001).
+* **Causa:** El contexto activo de `kubectl` está apuntando a un namespace del sistema (ej. `gatekeeper-system`). Como los manifiestos de prueba no especifican un namespace, intentan desplegarse ahí. Kubernetes protege los namespaces del sistema con su controlador nativo (Pod Security Admission) en modo estricto, aniquilando los pods antes de que Gatekeeper pueda evaluarlos.
+* **Solución:** Restablecer el contexto de Kubernetes al namespace `default` antes de ejecutar las pruebas, garantizando que Gatekeeper sea el único motor de validación:
+  ```bash
+  kubectl config set-context --current --namespace=default
+  ```
